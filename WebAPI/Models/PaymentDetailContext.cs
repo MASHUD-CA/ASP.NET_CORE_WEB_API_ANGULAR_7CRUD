@@ -8,9 +8,10 @@ namespace WebAPI.Models
 {
     public class PaymentDetailContext: DbContext
     {
-        public PaymentDetailContext(DbContextOptions<PaymentDetailContext>)
+        public PaymentDetailContext(DbContextOptions<PaymentDetailContext> options): base(options)
         {
 
         }
+       
     }
 }

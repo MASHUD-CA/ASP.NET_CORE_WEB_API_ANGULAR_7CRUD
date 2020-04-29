@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace WebAPI
 {
@@ -27,11 +28,23 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
-            services.AddMvc();
-            //Add Db contact service into services
+            // services.AddControllers();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                /*FOR CAMEL CASE AT POSTMAN= .AddJsonOptions(options => {
+                    var resolver = options.JsonSerializerOptions.Converters;
+                    if (resolver != null)
+                        (resolver as DefaultContractResolver).NamingStrategy = null;
+                    }); */
+            //Dependency Injection 
+            //Add Db contact service into services.
+            //Whenever we create with constructor parameter of type payment little context, 
+            //This IServicecollection property service will provide the new Instance of 
+            //This payment detail context inot this constructor parameter context
+
             services.AddDbContext<PaymentDetailContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+
+           // services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +54,15 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseMvc();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

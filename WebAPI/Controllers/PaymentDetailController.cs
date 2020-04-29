@@ -9,11 +9,20 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]  // Here controller will replace by PaymentDetailController
+
     public class PaymentDetailController : ControllerBase
     {
+        //Private Property _context of paymentDetailContext type
         private readonly PaymentDetailContext _context;
+
+        
+        //Controller Constructor of private property
+        //   Whenever we create with constructor parameter of type PaymentDetailContext, 
+        //  this IServicecollection property service will provide the new Instance of 
+        // this payment detail context into this constructor parameter context
 
         public PaymentDetailController(PaymentDetailContext context)
         {
@@ -27,20 +36,7 @@ namespace WebAPI.Controllers
             return await _context.PaymentDetails.ToListAsync();
         }
 
-        // GET: api/PaymentDetail/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PaymentDetail>> GetPaymentDetail(int id)
-        {
-            var paymentDetail = await _context.PaymentDetails.FindAsync(id);
-
-            if (paymentDetail == null)
-            {
-                return NotFound();
-            }
-
-            return paymentDetail;
-        }
-
+      
         // PUT: api/PaymentDetail/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
